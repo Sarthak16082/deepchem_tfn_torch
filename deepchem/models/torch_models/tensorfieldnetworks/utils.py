@@ -6,7 +6,7 @@ as described in the paper "Tensor field networks: Rotation- and translation-equi
 neural networks for 3D point clouds" (https://arxiv.org/abs/1802.08219).
 """
 
-import torch
+import torch    
 import numpy as np
 import scipy.linalg
 
