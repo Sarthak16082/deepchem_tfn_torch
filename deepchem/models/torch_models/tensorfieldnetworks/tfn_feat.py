@@ -92,7 +92,7 @@ class TFNFeaturizer(MolecularFeaturizer):
             # Add Hydrogens if requested
             if self.add_hydrogens:
                 mol = Chem.AddHs(mol, addCoords=True) # addCoords might be needed if generating conf later
-                if mol is None: # Check if AddHs failed (can happen)
+                if mol is None: # Check if AddHs failed
                      logger.warning("Failed to add hydrogens.")
                      return None # Cannot proceed
 
@@ -105,7 +105,7 @@ class TFNFeaturizer(MolecularFeaturizer):
 
             if conformer is None:
                 if self.generate_conformers:
-                    #logger.info("No conformer found, attempting generation...") # Reduce noise in tests
+                    #logger.info("No conformer found, attempting generation...")
                     # Add Hs temporarily for better conformer generation if not already added
                     mol_for_confgen = Chem.AddHs(mol, addCoords=True) if not self.add_hydrogens else mol
                     if mol_for_confgen is None:
@@ -120,7 +120,7 @@ class TFNFeaturizer(MolecularFeaturizer):
                     # conf_id = AllChem.EmbedMolecule(mol_for_confgen, maxAttempts=self.max_attempts_confgen, randomSeed=42)
 
                     if conf_id == -1:
-                        #logger.warning("Conformer generation failed.") # Reduce noise in tests
+                        #logger.warning("Conformer generation failed.")
                         return None
                     try:
                         AllChem.UFFOptimizeMolecule(mol_for_confgen)
@@ -145,10 +145,10 @@ class TFNFeaturizer(MolecularFeaturizer):
                     try:
                        conformer = mol.GetConformer()
                     except ValueError:
-                       #logger.error("Failed to retrieve conformer even after generation.") # Reduce noise in tests
+                       #logger.error("Failed to retrieve conformer even after generation.")
                        return None
                 else:
-                    #logger.warning("Molecule has no 3D conformer and generate_conformers=False, skipping.") # Reduce noise
+                    #logger.warning("Molecule has no 3D conformer and generate_conformers=False, skipping.")
                     return None
 
             # --- Extract Coordinates ---
@@ -160,7 +160,7 @@ class TFNFeaturizer(MolecularFeaturizer):
 
             num_atoms = mol.GetNumAtoms()
             if num_atoms == 0:
-                 # logger.warning("Molecule has zero atoms after processing.") # Noisy
+                 # logger.warning("Molecule has zero atoms after processing.") 
                  return None
 
             # --- Generate One-Hot Atom Types ---
@@ -231,7 +231,7 @@ class TFNFeaturizer(MolecularFeaturizer):
         # Return the list of results directly
         return all_features
 
-# Example Usage (similar to how you'd use it with DeepChem Loaders)
+# Example Usage
 # featurizer = TFNFeaturizer(atom_types=[1, 6, 7, 8, 9], generate_conformers=True)
 # smiles = 'CCO'
 # mol = Chem.MolFromSmiles(smiles)

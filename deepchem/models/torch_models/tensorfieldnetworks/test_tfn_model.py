@@ -112,7 +112,7 @@ def test_tensor_field_network_model_prepare_batch():
     inputs_device, labels_device, weights_device = model._prepare_batch(batch)
     
     # Check that tensors are moved to the correct device
-    # Modify the device assertion lines (around line 216)
+    # Modify the device assertion lines
     assert inputs_device[0].device.type == model.device.type
     assert inputs_device[1].device.type == model.device.type
     assert labels_device[0].device.type == model.device.type

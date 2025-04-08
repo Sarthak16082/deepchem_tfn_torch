@@ -7,13 +7,13 @@ from deepchem.models.torch_models.tensorfieldnetworks.tfn import TensorFieldNetw
 import random
 
 def test_tfn_overfitting():
-    # --- Set Seeds (Simpler) ---
+    # --- Set Seeds ---
     seed_value = 42
     random.seed(seed_value)
     np.random.seed(seed_value)
     torch.manual_seed(seed_value)
     if torch.cuda.is_available():
-        torch.cuda.manual_seed_all(seed_value) # Set seed for all GPUs
+        torch.cuda.manual_seed_all(seed_value) 
     # --------------------------
 
     # Synthetic Data
@@ -50,7 +50,6 @@ def test_tfn_overfitting():
         model.train()
         optimizer.zero_grad()
 
-        # Use the third output (atom_type_scalars)
         _, _, atom_type_scalars = model(coords, one_hot, debug=False)
 
         # Aggregate over atoms

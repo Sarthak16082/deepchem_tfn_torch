@@ -2,9 +2,6 @@ import unittest
 import numpy as np
 import logging
 from unittest import mock
-# Assuming TFNFeaturizer is defined in a file named tfn_featurizer.py
-# from tfn_featurizer import TFNFeaturizer
-# --- Paste the TFNFeaturizer class definition here for standalone testing ---
 import deepchem as dc
 from deepchem.feat import MolecularFeaturizer
 from deepchem.utils.typing import RDKitMol
@@ -221,8 +218,7 @@ class TestTFNFeaturizer(unittest.TestCase):
         featurizer = TFNFeaturizer(generate_conformers=True)
 
         # Suppress potential warnings if the logger reports failure
-        # logging.disable(logging.WARNING) # Optional: depends if your code logs warnings on -1 return
-
+        # logging.disable(logging.WARNING)
         # Run featurization - AllChem.EmbedMolecule will be the mock returning -1
         list_of_features = featurizer.featurize([mol])
 
@@ -231,7 +227,7 @@ class TestTFNFeaturizer(unittest.TestCase):
         # Assertions: Expect the featurization to return None in the list
         self.assertIsInstance(list_of_features, list)
         self.assertEqual(len(list_of_features), 1)
-        # THIS assertion should now pass because the mock forced a failure (-1 return)
+        # THIS assertion should pass because the mock forced a failure (-1 return)
         self.assertIsNone(list_of_features[0])
 
         # Check that the mock was actually called
@@ -242,7 +238,7 @@ class TestTFNFeaturizer(unittest.TestCase):
         mol_empty = Chem.Mol() # An empty molecule object
         featurizer = TFNFeaturizer()
 
-        # featurize now returns a list
+        # featurize returns a list
         list_of_features = featurizer.featurize([mol_empty])
 
         # Assert that the output is a list containing one element

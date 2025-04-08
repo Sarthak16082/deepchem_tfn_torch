@@ -67,7 +67,7 @@ def R(inputs: torch.Tensor,
         biases_initializer(b1)
         biases_initializer(b2)
     
-    # Register parameters (optional, if you want them to be part of a module)
+    # Register parameters (optional)
     w1 = nn.Parameter(w1)
     b1 = nn.Parameter(b1)
     w2 = nn.Parameter(w2)
@@ -617,7 +617,6 @@ def nonlinearity(input_tensor_list: Dict[int, List[torch.Tensor]],
 
     for key in input_tensor_list:
         for i, tensor in enumerate(input_tensor_list[key]):
-            # Call the provided rotation_equivariant_nonlinearity function.
             tensor_out = rotation_equivariant_nonlinearity(
                 tensor,
                 nonlin=nonlin,

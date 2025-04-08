@@ -13,11 +13,10 @@ from .tfn import TensorFieldNetworkModule
 
 def random_rotation_matrix_torch(rng: np.random.RandomState, device='cpu', dtype=torch.float32) -> torch.Tensor:
     """Generates a random 3D rotation matrix using NumPy/SciPy and converts to Torch."""
-    # Reusing the numpy version for generation
+    
     axis = rng.randn(3)
-    axis /= np.linalg.norm(axis) + 1e-8 # Use NumPy norm here
+    axis /= np.linalg.norm(axis) + 1e-8 
     theta = 2 * np.pi * rng.uniform(0.0, 1.0)
-    # Use SciPy for matrix exponential
     import scipy.linalg
     rot_mat_np = scipy.linalg.expm(np.cross(np.eye(3), axis * theta)).astype(np.float32)
     return torch.tensor(rot_mat_np, dtype=dtype, device=device)
@@ -35,7 +34,7 @@ def rotate_L1_NCD_torch(tensor: torch.Tensor, rot_matrix: torch.Tensor) -> torch
 # Rotate features with shape [N, N, C, 3]
 def rotate_L1_NND_torch(tensor: torch.Tensor, rot_matrix: torch.Tensor) -> torch.Tensor:
     """Applies a 3x3 rotation matrix to the last dim of a [N, N, C, 3] tensor."""
-    return torch.einsum('abcj,kj->abck', tensor, rot_matrix) # CORRECTED EQUATION
+    return torch.einsum('abcj,kj->abck', tensor, rot_matrix)
 
 class TestTorchEquivariance(unittest.TestCase):
 
@@ -45,14 +44,13 @@ class TestTorchEquivariance(unittest.TestCase):
         np.random.seed(self.seed)
         self.rng = np.random.RandomState(self.seed)
         self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
-        self.dtype = utils.FLOAT_TYPE # Assuming FLOAT_TYPE is torch.float32
-
+        self.dtype = utils.FLOAT_TYPE 
         # --- Parameters ---
         self.N = 5
         self.rbf_dim = 10
         self.channels_in = 4
         self.hidden_dim = 12
-        self.channels_out = 4  # Make this equal to channels_in for filter functions
+        self.channels_out = 4  
 
         # --- Geometry and Rotation ---
         self.geometry = torch.randn(self.N, 3, dtype=self.dtype, device=self.device)
@@ -66,7 +64,7 @@ class TestTorchEquivariance(unittest.TestCase):
         self.rotated_dij = utils.distance_matrix(self.rotated_geometry)
 
         # --- RBF Features ---
-        # Example: Gaussian basis functions (ensure these are invariant)
+        # Example: Gaussian basis functions (ensuring that these are invariant)
         self.rbf_widths = torch.abs(torch.randn(1, 1, self.rbf_dim, device=self.device, dtype=self.dtype)) * 0.5 + 0.1
         self.rbf_centers = torch.linspace(0.0, 5.0, self.rbf_dim, device=self.device, dtype=self.dtype).reshape(1, 1, -1)
         self.rbf_features = torch.exp(-self.rbf_widths * torch.square(self.dij.unsqueeze(-1) - self.rbf_centers))
@@ -211,7 +209,6 @@ class TestTorchEquivariance(unittest.TestCase):
         
     def test_filter1_output0_equivariance(self):
         """Tests layers.filter_1_output_0: 1 x 1 -> 0."""
-        # Only makes sense for L=1 inputs
         torch.manual_seed(self.seed)
         output_orig = layers.filter_1_output_0(self.input_L1, self.rbf_features, self.rij, F.relu, self.hidden_dim, self.channels_in)
         

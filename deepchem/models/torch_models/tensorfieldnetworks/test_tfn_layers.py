@@ -180,6 +180,7 @@ def test_F_0():
     # Test with custom nonlinearity
     outputs_relu = F_0(inputs)
     outputs_tanh = F_0(inputs, nonlin=torch.tanh)
+    
     # These should be different if nonlinearity is properly passed to R
     assert not torch.allclose(outputs_relu, outputs_tanh)
 
@@ -600,7 +601,7 @@ def test_concatenation():
 
 
 
-# Redo the function
+# Redo the function #TODO 
 def test_convolution_basic():
     # Create simple inputs with correct shapes
     input_tensor_list = {
@@ -620,7 +621,7 @@ def test_convolution_basic():
     layer_input_0 = torch.ones(3, 2)  # [N, input_dim]
     
     # Mock the convolution call instead of calling the full function
-    # We'll test each component individually
+    # test each component individually
     
     # Test filter_0 directly
     try:
@@ -649,8 +650,4 @@ def test_convolution_basic():
     except Exception as e:
         print(f"filter_1_output_1 error: {e}")
     
-    # Now we've verified the individual components, we can simply check
-    # that all the expected keys are in the output
-    # This is a more robust approach than trying to debug the full convolution
-    # which requires specific tensor shapes that might be complex to get right
     assert True, "Individual filter components verified"

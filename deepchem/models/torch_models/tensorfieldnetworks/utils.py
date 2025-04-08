@@ -68,7 +68,7 @@ def rotation_equivariant_nonlinearity(x: torch.Tensor, nonlin=ssp, biases_initia
     Args:
         x: torch.Tensor with channels as -2 axis and M as -1 axis.
         nonlin: Nonlinearity function to apply
-        biases_initializer: Optional, unused here (kept for API consistency with TensorFlow)
+        biases_initializer: Optional, but unused here (kept for API consistency with TensorFlow)
 
     Returns:
         torch.Tensor of same shape as x with 3d rotation-equivariant nonlinearity applied.
