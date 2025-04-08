@@ -5,9 +5,9 @@ import math
 import torch.nn.functional as F
 
 # Import functions from layers and utils
-from . import layers
-from . import utils
-from .tfn import TensorFieldNetworkModule
+from deepchem.models.torch_models.tensorfieldnetworks import layers
+from deepchem.models.torch_models.tensorfieldnetworks import utils
+from deepchem.models.torch_models.tensorfieldnetworks.tfn import TensorFieldNetworkModule
 
 # --- Rotation Helper Functions ---
 
